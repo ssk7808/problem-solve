@@ -1,11 +1,7 @@
 const fs = require('fs');
-const input = fs
-  .readFileSync(
-    '/Users/sanggyo/Desktop/problem-solve/BOJ/Silver/1920/input.txt',
-  )
-  .toString()
-  .trim()
-  .split('\n');
+const root =
+  process.platform === 'linux' ? '/dev/stdin' : __dirname + '/input.txt';
+const input = fs.readFileSync(root, 'utf8').toString().trim().split('\n');
 
 const [N, A, M, B] = input.map((v) => v.split(' ').map(Number));
 A.sort((a, b) => a - b);

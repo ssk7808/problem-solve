@@ -1,11 +1,7 @@
 const fs = require('fs');
-const input = fs
-  .readFileSync(
-    '/Users/sanggyo/Desktop/problem-solve/BOJ/Silver/10845/input.txt',
-  )
-  .toString()
-  .trim()
-  .split('\n');
+const root = process.platform === 'linux' ? '/dev/stdin' : __dirname + '/input.txt';
+const input = fs.readFileSync(root, 'utf8').toString().trim().split('\n').map(v => +v);
+
 
 const N = Number(input[0]);
 let queue = [];

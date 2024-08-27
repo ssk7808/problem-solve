@@ -1,33 +1,41 @@
 const fs = require('fs');
 const root =
   process.platform === 'linux' ? '/dev/stdin' : __dirname + '/input.txt';
-const input = fs.readFileSync(root, 'utf8').toString().trim().split('\n');
+const input = fs
+  .readFileSync(root, 'utf8')
+  .toString()
+  .trim()
+  .split('\n')
+  .map((ar) => ar.split(' ').map((v) => +v));
 
-let N = parseInt(input.shift());
-let map = input.map((e) => e.split(' ').map((v) => +v));
-const answer = [0, 0];
+const N = parseInt(input.shift());
+let blue = 0,
+  white = 0;
 
-function square(width, i, j) {
-  let first = map[i][j];
-  if (width === 1) {
-    first == 0 ? answer[0]++ : answer[1]++;
-    return;
-  }
-  for (let k = i; k < i + width; k++) {
-    for (let l = j; l < j + width; l++) {
-      if (map[k][l] !== first) {
-        const half = width / 2;
-        square(half, i, j);
-        square(half, i + half, j);
-        square(half, i, j + half);
-        square(half, i + half, j + half);
-        return;
+function square(m, x, y) {
+  let first = input[y][x];
+  let isUniform = true;
+  for (let i = y; i < y + m; i++) {
+    for (let j = x; j < x + m; j++) {
+      if (input[i][j] !== first) {
+        isUniform = false;
+        break;
       }
     }
+    if (!isUniform) break;
   }
-  first === 0 ? answer[0]++ : answer[1]++;
-  return;
+
+  if (isUniform) {
+    first === 0 ? white++ : blue++;
+  } else {
+    let half = m / 2;
+    square(half, x, y);
+    square(half, x + half, y);
+    square(half, x, y + half);
+    square(half, x + half, y + half);
+  }
 }
 
 square(N, 0, 0);
-console.log(answer.join('\n'));
+console.log(white);
+console.log(blue);
